@@ -1,0 +1,42 @@
+
+name: "Deploy to Google Cloud Run"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Login to Artifact Registry
+        uses: docker/login-action@v1
+        with:
+          registry: us-central1-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
+
+      - name: Login to Artifact Registry
+        run: |
+            docker build -t us-central1-docker.pkg.dev/qwiklabs-gcp-01-aae3e5aa7e45/cloudrun/backend:v1 .
+
+      - id: docker-push-tagged
+        name: Tag Docker image and push to Google Artifact Registry
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: |
+            us-central1-docker.pkg.dev/qwiklabs-gcp-01-aae3e5aa7e45/cloudrun/backend:v1
+            
+
+    
