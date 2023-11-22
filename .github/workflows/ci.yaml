@@ -25,10 +25,10 @@ jobs:
 
 
       - name: Deploy to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@main
+        uses: google-github-actions/deploy-cloudrun@v1
         with:
           image: gcr.io/cloudrun/hello
           service: hello
           region: us-central1
-          platform: managed
+        
   
