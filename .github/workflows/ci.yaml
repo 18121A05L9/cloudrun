@@ -20,7 +20,7 @@ jobs:
           export_default_credentials: true
 
       - name: Configure docker for GCP
-        run: gcloud auth configure-docker
+        run: gcloud config set project qwiklabs-gcp-03-53379b4640e2
 
 
 
