@@ -21,24 +21,14 @@ jobs:
 
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v1"
-
-      - name: "Docker auth"
-        run: |-
-          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
-
-      - name: Login to Artifact Registry
+      
+      - name: "SSH"
         run: |
-            docker build -t us-central1-docker.pkg.dev/qwiklabs-gcp-01-aae3e5aa7e45/cloudrun/backend:v2 .
+          gcloud compute ssh --zone "us-central1-a" "amc-demo" --command="mkdir actions"  --project "us-gcp-ame-its-450d9-npd-1"
+          gcloud compute ssh --zone "us-central1-a" "amc-demo" --command="ls -a"  --project "us-gcp-ame-its-450d9-npd-1"
+            
 
-      - name: Push image
-        run: docker push us-central1-docker.pkg.dev/qwiklabs-gcp-01-aae3e5aa7e45/cloudrun/backend:v2
 
-      - name: Deploy to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v1
-        with:
-          image: us-central1-docker.pkg.dev/qwiklabs-gcp-01-aae3e5aa7e45/cloudrun/backend:v2
-          service: hello
-          region: us-central1
             
 
     
