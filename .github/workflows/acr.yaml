@@ -24,8 +24,9 @@ jobs:
       
       - name: "SSH"
         run: |
-          gcloud compute ssh --zone "us-central1-a" "amc-demo" --command="mkdir actions"  --project "us-gcp-ame-its-450d9-npd-1"
-          gcloud compute ssh --zone "us-central1-a" "amc-demo" --command="ls -a"  --project "us-gcp-ame-its-450d9-npd-1"
+          gcloud compute ssh --zone "us-central1-a" "amc-demo" --tunnel-through-iap --project "us-gcp-ame-its-450d9-npd-1"
+          #gcloud compute ssh --zone "us-central1-a" "amc-demo" --command="mkdir actions"  --project "us-gcp-ame-its-450d9-npd-1"
+          #gcloud compute ssh --zone "us-central1-a" "amc-demo" --command="ls -a"  --project "us-gcp-ame-its-450d9-npd-1"
             
 
 
