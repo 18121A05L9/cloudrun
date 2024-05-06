@@ -21,12 +21,16 @@ jobs:
 
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v1"
+
+      - name: Get Github Actions IP
+        id: ip
+        uses: haythem/public-ip@v1.2
       
       - name: "SSH"
         run: |
-          gcloud compute ssh --zone "us-central1-a" "amc-demo" --tunnel-through-iap --project "us-gcp-ame-its-450d9-npd-1"
-          #gcloud compute ssh --zone "us-central1-a" "amc-demo" --command="mkdir actions"  --project "us-gcp-ame-its-450d9-npd-1"
-          #gcloud compute ssh --zone "us-central1-a" "amc-demo" --command="ls -a"  --project "us-gcp-ame-its-450d9-npd-1"
+          gcloud compute firewall-rules update amc-creative-edge-firewall --direction=INGRESS --action=ALLOW --rules=tcp:22 --source-ranges=${{ steps.ip.outputs.ipv4 }}/32 
+          gcloud compute ssh --zone "us-central1-a" "amc-demo" --command="mkdir actions"  --project "us-gcp-ame-its-450d9-npd-1"
+          gcloud compute ssh --zone "us-central1-a" "amc-demo" --command="ls -a"  --project "us-gcp-ame-its-450d9-npd-1"
             
 
 
